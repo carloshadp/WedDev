@@ -1,19 +1,27 @@
 import { useState, useEffect } from "react"
 import MovieCard from "../components/MovieCard"
 import movies from "../data/movies.json"
-
+import { infinity } from 'ldrs'
 
 export default function MovieListPage(){
-
-    const [search, setSearch] = useState("")
-    const [filmes, setFilmes] = useState([])
-
+    infinity.register()
+    
+    const [search, setSearch] = useState("");
+    const [filmes, setFilmes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        fetch("https://api.themoviedb.org/3/movie/popular?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br")
-        .then( data => data.json())
-        .then( data_json => setFilmes(data_json.results))
-        .catch( erro => console.log(erro) )
-        .finally(() => console.log("Cabo =("))
+        setIsLoading(true);
+
+
+        setTimeout(() => {
+
+            fetch("https://api.themoviedb.org/3/movie/popular?api_key=7c572a9f5b3ba776080330d23bb76e1e&language=pt-br")
+            .then( data => data.json())
+            .then( data_json => setFilmes(data_json.results))
+            .catch( erro => console.log(erro) )
+            .finally(() => setIsLoading(false))
+
+        }, 2000);  
 
     }, [])
 
@@ -36,8 +44,16 @@ export default function MovieListPage(){
                 value={search}
                 onChange={handleSearch}
             />
-            <section className="">
+            <section className="flex flex-wrap justify-evenly gap-4">
                 {
+                    isLoading ? <l-infinity
+                    size="55"
+                    stroke="4"
+                    stroke-length="0.15"
+                    bg-opacity="0.1"
+                    speed="1.3" 
+                    color="black" 
+                  ></l-infinity> : 
                     
 
                     filmesFiltrados
