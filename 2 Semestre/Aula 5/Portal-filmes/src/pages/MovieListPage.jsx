@@ -21,7 +21,7 @@ export default function MovieListPage(){
             .catch( erro => console.log(erro) )
             .finally(() => setIsLoading(false))
 
-        }, 2000);  
+        }, 10);  
 
     }, [])
 
